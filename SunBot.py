@@ -33,7 +33,7 @@ async def robux(ctx):
 async def on_member_join(member):
     if member.server.id == "475438053750603807":
         channel = client.get_channel("475667894223503361")
-        await client.send_message(channel, f"Welcome {member.mention} To Sunny's Service Server! Be sure to check out what Sun is selling in stock & announcements! In this server You can buy his servers, sell your own in market-place and sell directly to sun depending on what hes buying!")
+        await client.send_message(channel, f"Welcome {member.mention} to Sunny's Services Server (SSS). Head to info to find out more about this server!")
         role = discord.utils.get(member.server.roles, name='Customers')
         await client.add_roles(member, role)
 
