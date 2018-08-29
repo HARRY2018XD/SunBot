@@ -1,54 +1,72 @@
 import discord
 from discord.ext import commands
-import asyncio
 import time
 import random
 
-Client = discord.Client()
-client = commands.Bot(command_prefix = "!")
-client.remove_command('help')
+bot = commands.Bot(command_prefix = "r!")
+bot.remove_command('help')
 
-@client.event
+@bot.event
 async def on_ready():
-    print("Bot successfully booted & online.")
-    print("My name is " + client.user.name)
-    print("My ID is " + client.user.id)
-    await client.change_presence(game=discord.Game(type=2,name='SunnyBot (!)'))
+    print("Bot is online and working.")
+    await bot.change_presence(game=discord.Game(name='drill'))
 
-@client.command(pass_context=True)
-@commands.has_role("Sun")
-async def say(ctx, *, args):
-    await client.say(args)
-    await client.delete_message(ctx.message)
+@bot.command(pass_context=True)
+async def spitfire(ctx): 
+    spitfire = ['https://vsrldassets.redletterdays.co.uk/images/img435/productlarge/SRMSP_1.jpg', 'https://www.virginexperiencedays.co.uk/content/img/product/large/PSPF20.jpg', 'https://acesflyinghigh.files.wordpress.com/2012/02/fhc-spitfire-2011-3.jpg?w=960&h=400&crop=1']
+    embed = discord.Embed(
+        colour=0x1f32af
+    )
+    embed.set_author(name='Here are some facts on Spitfires: \nEngine - Rolls Royce Merlin, V12. \nAmount Built - 20,351 \nFirst Flight - March 5th, 1936 \nProduction - 1938 - 1948')
+    embed.set_image(url=random.choice(spitfire))
+    await bot.say(embed=embed)
 
-@client.command(pass_context=True)
-async def Robux(ctx):
-    await client.say("Info page on Robux: We are constantly trying to stock up on robux and sell it to anyone and everyone. We don't go first when selling, however if you're interested. DM ``@SunDance#7568``.")
+@bot.command(pass_context=True)
+async def f16(ctx): 
+    f16 = ['https://i.kinja-img.com/gawker-media/image/upload/s--UUTmniNC--/c_fill,f_auto,fl_progressive,g_center,h_675,q_80,w_1200/bsizh55wtlyv4v6ck7ul.jpg', 'https://i.kinja-img.com/gawker-media/image/upload/s--BGeJFlNx--/c_fit,f_auto,fl_progressive,q_80,w_320/qlmdipmtazqs98n69odr.jpg', 'https://nationalinterest.org/sites/default/files/main_images/22940430165_61ddb21e18_o.jpg']
+    embed = discord.Embed(
+        colour=0x1f32af
+    )
+    embed.set_author(name='Here are some facts on F16 Super Vipers: \nEngine - GE F110 - 132A Engine \nAmount Built - 4,500+ \nFirst Flight - January 20th, 1974 \nProduction - 1978 - Present')
+    embed.set_image(url=random.choice(f16))
+    await bot.say(embed=embed)
 
-@client.command(pass_context=True)
-async def robux(ctx):
-    await client.say("Info page on Robux: We are constantly trying to stock up on robux and sell it to anyone and everyone. We don't go first when selling, however if you're interested. DM ``@SunDance#7568``.")
+@bot.command(pass_context=True)
+async def typhoon(ctx): 
+    typhoon = ['https://www.southforward.com/wp-content/uploads/2018/05/Eurofighter-Typhoon.jpg', 'https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iQpC88q6i2ME/v0/-1x-1.jpg', 'https://i.ytimg.com/vi/N38IMzZkRdY/maxresdefault.jpg', 'http://aviationweek.com/site-files/aviationweek.com/files/imagecache/large_img/uploads/2017/06/leonardoeurofighters.jpg']
+    embed = discord.Embed(
+        colour=0x1f32af
+    )
+    embed.set_author(name='Here are some facts on Typhoon: \nEngine - Rolls Royce XG-40 \nAmount Built - 623 \nFirst Flight - March 27, 1994 \nProduction - 1994 - Present')
+    embed.set_image(url=random.choice(typhoon))
+    await bot.say(embed=embed)
 
-@client.event
-async def on_member_join(member):
-    if member.server.id == "475438053750603807":
-        channel = client.get_channel("475667894223503361")
-        await client.send_message(channel, f"Welcome {member.mention} to Sunny's Services Server (SSS). Head to info to find out more about this server!")
-        role = discord.utils.get(member.server.roles, name='Customers')
-        await client.add_roles(member, role)
+@bot.command(pass_context=True)
+async def chinook(ctx): 
+    chinook = ['https://www.defencetalk.com/wp-content/uploads/2011/01/RAF-chinook-helicopter.jpg', 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Chinook_hc2_za682_arp.jpg/1200px-Chinook_hc2_za682_arp.jpg', 'https://www.raf.mod.uk/raf-beta/assets/File/Chinook.png']
+    embed = discord.Embed(
+        colour=0x1f32af
+    )
+    embed.set_author(name='Here are some facts on Chinook: \nEngine - Lycoming T55 \nAmount Built - 1,200+ \nFirst Flight - September 21, 1961 \nProduction - 1962 - Present')
+    embed.set_image(url=random.choice(chinook))
+    await bot.say(embed=embed)
 
-@client.command(pass_context=True)
-@commands.has_permissions(manage_messages=True)
-async def purge(ctx, amount=100):
-    await client.purge_from(ctx.message.channel, limit=int(amount) + 1)
-    await client.say ('Messages successfully removed.')
+@bot.command(pass_context=True)
+async def kick(ctx, userName: discord.Member, *, reason: str):
+    if ctx.message.author.server_permissions.kick_members:
+        await bot.kick(userName)
+        embed = discord.Embed(title="User kicked:", description=f"User {userName} has successfully been kicked.", color=0x1f32af)
+        await bot.say(embed=embed)
 
-@client.event
-async def on_command_error(error: Exception, ctx: commands.Context):
-    if isinstance(error, commands.CommandNotFound):
-        return
-    print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
-    traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+@bot.command(pass_context=True)
+async def ban(ctx, userName: discord.Member, *, reason: str):
+    if ctx.message.author.server_permissions.ban_members:
+        await bot.ban(userName)
+        embed = discord.Embed(title="User banned:", description=f"User {userName} has successfully been banned.", color=0x1f32af)
+        await bot.say(embed=embed)
 
-client.run("NDc1NjYxOTc0ODk0ODA0OTky.DkiSRw.4eKjL1U9oSTGye9QCZAMmVUHy3U")
 
+
+
+
+bot.run("NDg0MzgyMjEzMDA2Mjk1MDcw.DmhLsw.MAxXhFR6qzIY5iGI5L2zHKlMyRc")
